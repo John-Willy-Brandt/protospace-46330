@@ -2,51 +2,77 @@
   <div class="inner">
     <div class="prototype__wrapper">
       <p class="prototype__hedding">
-        <%= "プロトタイプのタイトル"%>
+         <%= link_to @prototype.title, class: :card__title %>
+        <%# <%= "プロトタイプのタイトル"%>
       </p>
-      <%= link_to "by プロトタイプの投稿者", root_path, class: :prototype__user %>
+      <p class="card__user">
+        by <%= link_to "#{@prototype.user.user_name}",
+         user_path(@prototype.user), class: :greeting__link%></p>
+
+      <%# <%= link_to "by プロトタイプの投稿者", root_path, class: :prototype__user %>
+     <% if user_signed_in? && current_user.id == @prototype.user_id %>      
       <%# プロトタイプの投稿者とログインしているユーザーが同じであれば以下を表示する %>
         <div class="prototype__manage">
-          <%= link_to "編集する", root_path, class: :prototype__btn %>
-          <%= link_to "削除する", root_path, class: :prototype__btn %>
+          <%= link_to "編集する", edit_prototype_path(@prototype.id), class: :prototype__btn %>
+          <%= link_to "削除する", prototype_path(@prototype),
+            data: { turbo_method: :delete, turbo_confirm: "本当に削除しますか？" },
+            class: :prototype__btn %>
         </div>
+     <% end %>
       <%# // プロトタイプの投稿者とログインしているユーザーが同じであれば上記を表示する %>
       <div class="prototype__image">
-        <%= image_tag "プロトタイプの画像" %>
+        <%# <%= image_tag "プロトタイプの画像" %>
+        <%= link_to image_tag(@prototype.image), class: :card__img %>
       </div>
       <div class="prototype__body">
         <div class="prototype__detail">
           <p class="detail__title">キャッチコピー</p>
           <p class="detail__message">
-            <%= "プロトタイプのキャッチコピー" %>
+            <%= link_to @prototype.catch_copy, class: :card__summary %>
+            <%# <%= "プロトタイプのキャッチコピー" %>
           </p>
         </div>
         <div class="prototype__detail">
           <p class="detail__title">コンセプト</p>
           <p class="detail__message">
-            <%= "プロトタイプのコンセプト" %>
+            <%= link_to @prototype.concept, class: :card__summary %>
+            <%# <%= "プロトタイプのコンセプト" %>
           </p>
         </div>
       </div>
       <div class="prototype__comments">
+       <% if user_signed_in? %>
         <%# ログインしているユーザーには以下のコメント投稿フォームを表示する %>
+           <%= form_with model: [@prototype, @comment], local: true do |f| %>
           <%# <%= form_with model: モデル名,local: true do |f|%>
             <div class="field">
-              <%# <%= f.label :hoge, "コメント" %><br />
-              <%# <%= f.text_field :hoge, id:"comment_content" %>
+              <%= f.label :comments, "コメント" %><br />
+              <%= f.text_field :comments, id:"comment_content" %>
             </div>
             <div class="actions">
-              <%# <%= f.submit "送信する", class: :form__btn  %>
+              <%= f.submit "送信する", class: :form__btn  %>
             </div>
-          <%# <% end %>
+          <% end %>
+         <% else %>
+         <% end %>
         <%# // ログインしているユーザーには上記を表示する %>
+
         <ul class="comments_lists">
           <%# 投稿に紐づくコメントを一覧する処理を記述する %>
-            <li class="comments_list">
-              <%# <%= " コメントのテキスト "%>
-              <%# <%= link_to "（ ユーザー名 ）", root_path, class: :comment_user %>
-            </li>
-          <%# // 投稿に紐づくコメントを一覧する処理を記述する %>
+  <% if @comments.any? %>
+    <% @comments.each do |comment| %>
+      <li class="comments_list">
+        <span class="card__summary"><%= comment.comments %></span>
+        <%= link_to "（#{comment.user.user_name}）",
+                    user_path(comment.user),
+                    class: :comment_user %>
+        <span class="comment_time"><%= l comment.created_at, format: :short %></span>
+      </li>
+    <% end %>
+  <% else %>
+    <li class="comments_list --empty">まだコメントはありません。</li>
+  <% end %>
+       <%# // 投稿に紐づくコメントを一覧する処理を記述する %>
         </ul>
       </div>
     </div>

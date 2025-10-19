@@ -4,7 +4,10 @@
       <h2 class="page-heading">ユーザーログイン</h2>
         <%# 「モデル名」にはUserモデルであれば@userを渡しましょう。%>
         <%# 「ログイン機能へのパス」は、devise導入後にrails routesを実行してdevise/sessions#createへのパスを確認し、記載してください。 %>
-        <%= form_with model: @user, url: new_user_session_path, local: true do |f| %>
+<%= form_with scope: resource_name,
+              url: session_path(resource_name),
+              method: :post,
+              data: { turbo: false } do |f| %>
 
         <div class="field">
           <%= f.label :email, "メールアドレス" %><br />
@@ -12,8 +15,8 @@
         </div>
 
         <div class="field">
-          <%= f.label :user_password, "パスワード（6文字以上）" %><br />
-          <%= f.password_field :user_password, id:"user_password", autocomplete: "current-password" %>
+          <%= f.label :password, "パスワード（6文字以上）" %><br />
+          <%= f.password_field :password, id:"user_password", autocomplete: "current-password" %>
         </div>
 
         <div class="actions">
