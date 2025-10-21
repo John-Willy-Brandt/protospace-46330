@@ -5,8 +5,8 @@
     <p class="card__summary">
       <%= link_to prototype.catch_copy, class: :card__summary %>
     </p>
-    <%= link_to "#{prototype.user.user_name}さん", user_path(prototype.user), class: :greeting__link%>
+    
     <%# <%= link_to "by プロトタイプの投稿者名", prototype.user, class: :card__user %>
-    <p class="card__user">by <%= prototype.user.user_name %></p>
+    <p class="card__user">by <%= link_to "#{prototype.user.user_name}さん", user_path(prototype.user), class: :greeting__link%></p>
   </div>
 </div>

@@ -2,12 +2,11 @@
   <div class="inner">
     <div class="prototype__wrapper">
       <p class="prototype__hedding">
-         <%= link_to @prototype.title, class: :card__title %>
+         <%= link_to @prototype.title %>
         <%# <%= "プロトタイプのタイトル"%>
       </p>
-      <p class="card__user">
-        by <%= link_to "#{@prototype.user.user_name}",
-         user_path(@prototype.user), class: :greeting__link%></p>
+        <%= link_to "by #{@prototype.user.user_name}",
+         user_path(@prototype.user), class: :prototype__user%>
 
       <%# <%= link_to "by プロトタイプの投稿者", root_path, class: :prototype__user %>
      <% if user_signed_in? && current_user.id == @prototype.user_id %>      
@@ -15,27 +14,27 @@
         <div class="prototype__manage">
           <%= link_to "編集する", edit_prototype_path(@prototype.id), class: :prototype__btn %>
           <%= link_to "削除する", prototype_path(@prototype),
-            data: { turbo_method: :delete, turbo_confirm: "本当に削除しますか？" },
+            data: { turbo_method: :delete },
             class: :prototype__btn %>
         </div>
      <% end %>
       <%# // プロトタイプの投稿者とログインしているユーザーが同じであれば上記を表示する %>
       <div class="prototype__image">
         <%# <%= image_tag "プロトタイプの画像" %>
-        <%= link_to image_tag(@prototype.image), class: :card__img %>
+        <%= link_to image_tag(@prototype.image) %>
       </div>
       <div class="prototype__body">
         <div class="prototype__detail">
           <p class="detail__title">キャッチコピー</p>
           <p class="detail__message">
-            <%= link_to @prototype.catch_copy, class: :card__summary %>
+            <%= link_to @prototype.catch_copy %>
             <%# <%= "プロトタイプのキャッチコピー" %>
           </p>
         </div>
         <div class="prototype__detail">
           <p class="detail__title">コンセプト</p>
           <p class="detail__message">
-            <%= link_to @prototype.concept, class: :card__summary %>
+            <%= link_to @prototype.concept %>
             <%# <%= "プロトタイプのコンセプト" %>
           </p>
         </div>
